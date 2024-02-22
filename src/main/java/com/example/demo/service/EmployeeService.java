@@ -57,7 +57,7 @@ public class EmployeeService {
     }
     
     public List<Employee> searchbyname(String name){
-    	return emprepo.findByNameContaining(name);
+    	return emprepo.findByNameContainingIgnoreCase(name);
     }
     
     

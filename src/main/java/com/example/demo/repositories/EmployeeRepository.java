@@ -12,7 +12,7 @@ import com.example.demo.model.Employee;
 @EnableJpaRepositories
 public interface EmployeeRepository extends JpaRepository<Employee,Long> {
 	
-    List<Employee> findByNameContaining(String name);
+    List<Employee> findByNameContainingIgnoreCase(String name);
 
 
 
