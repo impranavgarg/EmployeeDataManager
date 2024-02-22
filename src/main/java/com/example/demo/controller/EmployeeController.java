@@ -1,21 +1,21 @@
 package com.example.demo.controller;
 
 import java.io.ByteArrayInputStream;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.InputStreamResource; 
 
 import org.springframework.web.bind.annotation.*;
 
+import com.example.demo.helper.Helper;
 import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeExcelService;
 import com.example.demo.service.EmployeeService;
@@ -102,6 +102,17 @@ public class EmployeeController {
                 .ok()
                 .headers(headers)
                 .body(new InputStreamResource(inStream));
+	}
+	
+	@PostMapping("/upload/excel")
+	public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file){
+		if(Helper.checkedExcelFormat(file)) {
+			this.employeeSer.save(file);
+			return ResponseEntity.ok(Map.of("message", "data is saved to db"));
+			
+		}
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Upload excel file");
 	}
 	
 
