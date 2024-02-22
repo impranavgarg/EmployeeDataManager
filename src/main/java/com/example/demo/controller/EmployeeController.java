@@ -58,6 +58,12 @@ public class EmployeeController {
 
 		
 	}
+	@GetMapping("/search/{empname}")
+	public List<Employee> search(@PathVariable("empname") String name) {
+		
+		return employeeSer.searchbyname(name);
+		
+	}
 	
 
 }

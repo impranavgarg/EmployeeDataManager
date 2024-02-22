@@ -55,6 +55,9 @@ public class EmployeeService {
 		
 		
     }
+    public List<Employee> searchbyname(String name){
+    	return emprepo.findByNameContaining(name);
+    }
     
     
     
