@@ -1,6 +1,10 @@
 package com.example.demo.model;
 
+
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="employeetable")
@@ -15,18 +19,7 @@ public class Employee {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getFirstname() {
-		return firstname;
-	}
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-	public String getLastname() {
-		return lastname;
-	}
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+
 	public String getEmailId() {
 		return EmailId;
 	}
@@ -45,9 +38,18 @@ public class Employee {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	private String firstname;
-	private String lastname;
+	
+    @Size(max = 15)
+	private String name;
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	private String EmailId;
+	@Positive
 	private int  salary;
 	private String role;
 

@@ -30,8 +30,8 @@ public class EmployeeService {
 
         if (optionalEmployee.isPresent()) {
             Employee existemp = optionalEmployee.get();
-            existemp.setFirstname(updateemp.getFirstname());
-            existemp.setLastname(updateemp.getLastname());
+            existemp.setName(null);
+            
             existemp.setEmailId(updateemp.getEmailId());
             existemp.setSalary(updateemp.getSalary());
             existemp.setRole(updateemp.getRole());
@@ -55,6 +55,7 @@ public class EmployeeService {
 		
 		
     }
+    
     public List<Employee> searchbyname(String name){
     	return emprepo.findByNameContaining(name);
     }
