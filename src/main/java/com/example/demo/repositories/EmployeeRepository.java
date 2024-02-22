@@ -13,6 +13,8 @@ import com.example.demo.model.Employee;
 public interface EmployeeRepository extends JpaRepository<Employee,Long> {
 	
     List<Employee> findByNameContainingIgnoreCase(String name);
+    List<Employee> findByRoleContainingIgnoreCase(String role);
+
 
 
 

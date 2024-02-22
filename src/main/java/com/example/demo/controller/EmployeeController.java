@@ -65,6 +65,12 @@ public class EmployeeController {
 		return employeeSer.searchbyname(name);
 		
 	}
+	@GetMapping("/search/{role}")
+	public List<Employee> searchbyrole(@PathVariable("role") String role) {
+		
+		return employeeSer.searchbyrole(role);
+		
+	}
 	
 
 }
