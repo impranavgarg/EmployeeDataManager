@@ -1,9 +1,11 @@
 package com.example.demo.service;
 
+import java.io.IOException;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.model.Employee;
 import com.example.demo.repositories.EmployeeRepository;
@@ -64,6 +66,17 @@ public class EmployeeService {
     }
     
     
+    public void saveAll(List<Employee> employees){
+    	
+    	for(int i =0;i<employees.size();i++) {
+             emprepo.save(employees.get(i));
+
+    	}
+    	
+    }
+
+    
+
     
 
 }

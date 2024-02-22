@@ -1,12 +1,23 @@
 package com.example.demo.controller;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Optional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.InputStreamResource; 
+
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.model.Employee;
+import com.example.demo.service.EmployeeExcelService;
 import com.example.demo.service.EmployeeService;
 
 @RestController
@@ -15,6 +26,9 @@ public class EmployeeController {
 	
 	@Autowired
 	EmployeeService employeeSer;
+	
+	@Autowired
+	EmployeeExcelService excelserve;
 	
 	@PostMapping("/create")
 	public Employee saveemp(@RequestBody Employee e) {
@@ -71,6 +85,26 @@ public class EmployeeController {
 		return employeeSer.searchbyrole(role);
 		
 	}
+	@GetMapping("/export/excel")
+	@ResponseBody
+	public ResponseEntity<InputStreamResource> exportToExcel() {
+	    ByteArrayInputStream inStream = excelserve.exportToExcel();
+        HttpHeaders headers = new HttpHeaders();
+
+
+
+        headers.add("Content-Disposition", "attachment; filename=employees.xlsx");  
+
+
+        headers.add("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .body(new InputStreamResource(inStream));
+	}
+	
+
 	
 
 }

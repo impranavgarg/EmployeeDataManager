@@ -3,6 +3,7 @@ package com.example.demo.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
@@ -39,6 +40,7 @@ public class Employee {
 		this.role = role;
 	}
 	
+    @NotNull
     @Size(max = 15)
 	private String name;
 	
@@ -48,6 +50,8 @@ public class Employee {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+    @Email 
 	private String EmailId;
 	@Positive
 	private int  salary;
