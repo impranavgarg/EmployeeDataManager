@@ -14,11 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.InputStreamResource; 
 
 import org.springframework.web.bind.annotation.*;
-
-import com.example.demo.helper.Helper;
 import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeExcelService;
 import com.example.demo.service.EmployeeService;
+
+import jakarta.validation.ValidationException;
 
 @RestController
 @RequestMapping("/employee")
@@ -31,9 +31,19 @@ public class EmployeeController {
 	EmployeeExcelService excelserve;
 	
 	@PostMapping("/create")
-	public Employee saveemp(@RequestBody Employee e) {
-		employeeSer.createEmployee(e);
-		return e;
+	public ResponseEntity<?> saveemp(@RequestBody Employee e) {
+    	
+		try {
+            Employee createdEmployee = employeeSer.createEmployee(e);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
+        } catch (ValidationException e1) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e1.getMessage());
+        } catch (Exception e1) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while creating the employee.");
+        }
+
+        
+
 		
 	}
 	
@@ -43,33 +53,30 @@ public class EmployeeController {
 	}
 	
 	@GetMapping("/find/{id}")
-	public Employee retrivelistbyid(@PathVariable("id") long eid){
+	public ResponseEntity<?> retrivelistbyid(@PathVariable("id") long eid){
 		Employee obj=null;
 		Optional<Employee> edata=employeeSer.getEmpbyID(eid);
 		if(edata.isPresent()) {
 			obj = edata.get();
-			return obj;
+			return ResponseEntity.status(HttpStatus.FOUND).body(obj);
 		}
 		
-		return obj;
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee Do not Exist in DataBase");
 		
 		
 	}
 	
 	@PutMapping("/update/{id}")
-	public Employee updateemp(@PathVariable("id") long eid ,@RequestBody Employee u) {
+	public ResponseEntity<?> updateemp(@PathVariable("id") long eid ,@RequestBody Employee u) {
 		return employeeSer.updateEmployee(eid, u);
 		
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public String deleteEmp(@PathVariable("id") long eid) {
-		
+	public ResponseEntity<String> deleteEmp(@PathVariable("id") long eid) {
 		
 		 return employeeSer.deleteEmp(eid);
 		
-		
-
 		
 	}
 	
@@ -105,17 +112,10 @@ public class EmployeeController {
 	}
 	
 	@PostMapping("/upload/excel")
-	public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file){
-		if(Helper.checkedExcelFormat(file)) {
-			this.employeeSer.save(file);
-			return ResponseEntity.ok(Map.of("message", "data is saved to db"));
-			
-		}
+	public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
 		
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Upload excel file");
+		return employeeSer.save(file) ;
 	}
 	
-
 	
-
 }
