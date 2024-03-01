@@ -46,6 +46,10 @@ public class EmployeeController {
 
 		
 	}
+	@GetMapping("/findtop10")
+	public List<Employee> findtop10(){
+		return employeeSer.topten();
+	}
 	
 	@GetMapping("/findall")
 	public List<Employee> retrivelist(){

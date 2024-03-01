@@ -50,6 +50,9 @@ public class EmployeeService {
     public List<Employee> getAll() {
         return emprepo.findAll();
     }
+    public List<Employee> topten(){
+    	return emprepo.findtop10();
+    }
     public Optional<Employee> getEmpbyID(long id) {
         return emprepo.findById(id);
     }

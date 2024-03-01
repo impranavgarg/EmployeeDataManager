@@ -52,6 +52,7 @@ public class Employee {
     @Email 
 	private String EmailId;
 	@Positive
+	@Column
 	private int  salary;
 	private String role;
 
